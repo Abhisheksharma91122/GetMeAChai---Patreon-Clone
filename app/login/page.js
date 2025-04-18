@@ -1,11 +1,22 @@
 "use client"
 import React from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const Login = () => {
 
     const { data: session } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (session) {
+            router.push('/dashboard')
+        }
+    }, [session])
     
+    
+
     return (
         <>
             <div className='container mx-auto text-white py-14'>
@@ -97,7 +108,7 @@ const Login = () => {
                 </button>
 
 
-                <button onClick={()=>{signIn("github")}}
+                <button onClick={() => { signIn("github") }}
                     className="flex items-center bg-white border w-64 border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-black hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer">
                     <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 73 73" version="1.1">
