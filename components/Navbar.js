@@ -24,7 +24,7 @@ const Navbar = () => {
         <div>
           <Link href={'/'}>
             <div className='logo font-bold text-xl flex justify-center items-center'>
-              <img src="/tea.gif" alt="tea img" width={44} />
+              <img className='invertImg' src="/tea.gif" alt="tea img" width={44} />
               <span>GetMeAChai!</span>
             </div>
           </Link>
