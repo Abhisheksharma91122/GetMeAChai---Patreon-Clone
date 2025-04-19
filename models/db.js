@@ -1,7 +1,7 @@
 // models/db.js
 import mongoose from "mongoose";
 
-const url = process.env.MONGO_URI;
+const url = "mongodb://127.0.0.1:27017/chai";
 
 if (!url) {
   throw new Error("MONGO_URI is not defined in environment variables.");

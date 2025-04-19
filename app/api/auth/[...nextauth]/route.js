@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import mongoose from "mongoose";
 import connectDB from "@/models/db";
+import User from "@/models/User";
 
 const authOptions = {
   providers: [
@@ -11,12 +12,33 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      if(account.providers == "github") {
+    async signIn({ user, account, profile }) {
+      console.log("this is user : ", user)
+      if (account.provider === "github") {
+        await connectDB();
+        const currentUser = await User.findOne({ email: user.email });
 
+        if (!currentUser) {
+
+          const newUser = await User.create({
+            email: user.email,
+            username: user.email.split("@")[0],
+          });
+
+        }
       }
-    }
-  }
+      return true;
+    },
+
+    async session({ session, token }) {
+      console.log("this is session : ", session)
+      await connectDB();
+      const dbUser = await User.findOne({ email: session.user.email });
+      session.user.name = dbUser.username;
+      return session;
+    },
+  },
+
 };
 
 const handler = NextAuth(authOptions);
