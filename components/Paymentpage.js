@@ -15,12 +15,11 @@ const Paymentpage = ({ username }) => {
         message: "",
         amount: ""
     })
-    
+
     const handleChange = (e) => {
         setPaymentform({...paymentform, [e.target.name]: e.target.value});
         console.log(paymentform)
-        console.log("KEY_ID:", process.env.KEY_ID);
-        console.log(process.env.KEY_SECRET)
+        console.log("KEY_ID:", process.env.NEXT_PUBLIC_KEY_ID);
     }
 
     const pay = async(amount) => {
@@ -28,14 +27,14 @@ const Paymentpage = ({ username }) => {
         let a = await initiate(amount, username, paymentform)
         let orderId = a.id;
         var options = {
-            "key": process.env.KEY_ID, // Enter the Key ID generated from the Dashboard
+            "key": process.env.NEXT_PUBLIC_KEY_ID, // Enter the Key ID generated from the Dashboard
             "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "name": "get me a chai",
             "description": "Test Transaction",
             "image": "https://example.com/your_logo",
             "order_id": orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            "callback_url": `${process.env.URL}/api/razorpay`,
+            "callback_url": `http://localhost:3000/api/razorpay`,
             "prefill": {
                 "name": "Gaurav Kumar",
                 "email": "gaurav.kumar@example.com",
