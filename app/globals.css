@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
 
-.invertImg{
+.invertImg {
     filter: invert(0.23);
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

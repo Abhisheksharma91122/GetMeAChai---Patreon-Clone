@@ -21,3 +21,28 @@ export const initiate = async (amount, to_username, paymentform) => {
 
     return x;
 }
+
+
+export const fetchuser = async(username) => {
+    await connectDB();
+    console.log(username);
+    let u = await User.findOne({username: username});
+    let user = u.toObject({flattenObjectIds: true})
+    return user;
+}
+
+export const fetchpayments = async(username) => {
+    await connectDB();
+    // find all payments sorted by decreasing order of amount and flatten object
+    let p = await Payment.find({to_user: username, done: true}).sort({amount: -1}).lean();
+
+    // Normalize payments
+    const normalized = p.map(payment => ({
+        ...payment,
+        _id: payment._id.toString(), // ObjectId to String
+        createdAt: payment.createdAt?.toISOString(), // Date to String
+        updatedAt: payment.updatedAt?.toISOString(), // Date to String
+    }));
+
+    return normalized;
+}
