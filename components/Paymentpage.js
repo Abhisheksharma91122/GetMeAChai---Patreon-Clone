@@ -18,6 +18,7 @@ const Paymentpage = ({ username }) => {
         message: "",
         amount: ""
     })
+    const [loading, setLoading] = useState(true)
     const [currentUser, setcurrentUser] = useState({})
     const [payment, setPayment] = useState([])
     const searchParams = useSearchParams();
@@ -25,15 +26,15 @@ const Paymentpage = ({ username }) => {
 
     useEffect(() => {
         getData()
-    },[])
+    }, [])
 
     useEffect(() => {
-      if(searchParams.get("paymentdone") == "true"){
-        toast.success("payment success")
-      }
-      router.push(`/${username}`)
+        if (searchParams.get("paymentdone") == "true") {
+            toast.success("payment success")
+        }
+        router.push(`/${username}`)
     }, [])
-    
+
 
 
 
@@ -47,7 +48,8 @@ const Paymentpage = ({ username }) => {
         setcurrentUser(a);
         let dbpayments = await fetchpayments(username);
         setPayment(dbpayments);
-        console.log("this is a : ", a, payment)
+        setLoading(false)
+        // console.log(payment.length)
     }
 
 
@@ -96,14 +98,17 @@ const Paymentpage = ({ username }) => {
 
             <div className="infor flex flex-col justify-center items-center my-16">
                 <div className='font-bold text-2xl'>@{username}</div>
-                <div className='text-sm'>creating Music on Vinyl, T-Shirts and all sorts of other stuff</div>
+                <div className='text-sm'>Lets help {username} get a chai!</div>
                 <div className='text-sm text-gray-500'>
-                    102 members &bull; 475 posts
+                    {loading
+                        ? 'Loading payments...'
+                        : `${payment.length} payments . ₹${payment.reduce((total, p) => total + p.amount, 0) / 100} raised`}
+
                 </div>
 
                 <div className='payment flex gap-3 w-[80%] mt-11 h-[50%]'>
                     <div className='supporters w-1/2 bg-slate-900 rounded-2xl p-10 overflow-y-auto min-h-[300px] max-h-[500px]'>
-                        <h2 className='font-bold text-2xl text-center my-5'>Supporters</h2>
+                        <h2 className='font-bold text-2xl text-center my-5'>Top 10 Supporters</h2>
                         <ul>
                             {payment.length == 0 && <li>No payments yet</li>}
                             {payment.map((p, i) => {
@@ -124,10 +129,10 @@ const Paymentpage = ({ username }) => {
                             <input type="text" name='message' value={paymentform.message} onChange={(e) => handleChange(e)} className='w-full p-3 rounded-lg bg-slate-800' placeholder='Enter Message' />
                             <input type="text" name='amount' value={paymentform.amount} onChange={(e) => handleChange(e)} className='w-full p-3 rounded-lg bg-slate-800' placeholder='Enter Amount' />
                             <button onClick={() => { pay(parseInt(paymentform.amount) * 100) }} type="button" className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2
-                                    ${paymentform.name?.length < 3 || paymentform.message?.length < 4
+                                    ${paymentform.name?.length < 3 || paymentform.message?.length < 4 || paymentform.amount?.length < 1
                                     ? 'bg-slate-500 cursor-not-allowed'
                                     : 'bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 cursor-pointer'
-                                }`} disabled={paymentform.name?.length < 3 || paymentform.message?.length < 4}>pay</button>
+                                }`} disabled={paymentform.name?.length < 3 || paymentform.message?.length < 4 || paymentform.amount?.length < 1}>pay</button>
                         </div>
                         {/* default payment buttons */}
                         <div className='flex mt-5 gap-3'>

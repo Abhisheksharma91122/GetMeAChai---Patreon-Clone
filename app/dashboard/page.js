@@ -17,6 +17,7 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    document.title = "Dashboard - Get Me A Chai"
     if (!session) {
       router.push('/login')
     } else {
@@ -27,6 +28,7 @@ const Dashboard = () => {
   const getData = async() => {
     let a = await fetchuser(session.user.name);
     setform(a);
+    console.log("this is form" , a)
   }
 
   const handleSubmit = async(e)=>{
@@ -86,3 +88,4 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+
