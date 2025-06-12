@@ -106,8 +106,8 @@ const Paymentpage = ({ username }) => {
 
                 </div>
 
-                <div className='payment flex gap-3 w-[80%] mt-11 h-[50%]'>
-                    <div className='supporters w-1/2 bg-slate-900 rounded-2xl p-10 overflow-y-auto min-h-[300px] max-h-[500px]'>
+                <div className='payment flex flex-col md:flex-row gap-3 w-[80%] mt-11 h-[50%]'>
+                    <div className='supporters w-full md:w-1/2 bg-slate-900 rounded-2xl p-10 overflow-y-auto min-h-[300px] max-h-[500px]'>
                         <h2 className='font-bold text-2xl text-center my-5'>Top 10 Supporters</h2>
                         <ul>
                             {payment.length == 0 && <li>No payments yet</li>}
@@ -122,7 +122,7 @@ const Paymentpage = ({ username }) => {
                         </ul>
                     </div>
 
-                    <div className='makePayment w-1/2 bg-slate-900 rounded-2xl p-10 min-h-[300px] max-h-[500px]'>
+                    <div className='makePayment w-full mt-4 md:mt-0 md:w-1/2 bg-slate-900 rounded-2xl p-10 min-h-[300px] md:max-h-[500px]'>
                         <h2 className='font-bold text-2xl text-center my-5'>Make Payment</h2>
                         <div className='flex flex-col gap-3'>
                             <input type="text" name='name' value={paymentform.name} onChange={(e) => handleChange(e)} className='w-full p-3 rounded-lg bg-slate-800' placeholder='Enter Name' />
@@ -135,7 +135,7 @@ const Paymentpage = ({ username }) => {
                                 }`} disabled={paymentform.name?.length < 3 || paymentform.message?.length < 4 || paymentform.amount?.length < 1}>pay</button>
                         </div>
                         {/* default payment buttons */}
-                        <div className='flex mt-5 gap-3'>
+                        <div className='flex flex-col md:flex-row mt-5 gap-3'>
                             <button className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2
                                     ${paymentform.name?.length < 3 || paymentform.message?.length < 4
                                     ? 'bg-slate-500 cursor-not-allowed'

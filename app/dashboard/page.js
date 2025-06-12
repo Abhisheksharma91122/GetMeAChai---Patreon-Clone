@@ -37,7 +37,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className='container mx-auto py-5'>
+    <div className='container mx-auto py-5 px-4 md:px-0'>
       <h1 className='font-bold text-center my-5 text-3xl'>Welcome to Dashboard</h1>
 
       <form className='max-w-2xl mx-auto' action={handleSubmit}>
