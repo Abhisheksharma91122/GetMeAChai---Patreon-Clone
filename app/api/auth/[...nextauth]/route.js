@@ -12,32 +12,37 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      console.log("this is user : ", user)
+  async signIn({ user, account, profile }) {
+    try {
       if (account.provider === "github") {
         await connectDB();
-        const currentUser = await User.findOne({ email: user.email });
+        const existingUser = await User.findOne({ email: user.email });
 
-        if (!currentUser) {
-
-          const newUser = await User.create({
+        if (!existingUser) {
+          await User.create({
             email: user.email,
             username: user.email.split("@")[0],
           });
-
         }
       }
       return true;
-    },
+    } catch (err) {
+      console.error("Error in signIn callback:", err);
+      return false; // causes login to fail cleanly
+    }
+  },
 
-    async session({ session, token }) {
-      console.log("this is session : ", session)
+  async session({ session, token }) {
+    try {
       await connectDB();
       const dbUser = await User.findOne({ email: session.user.email });
-      session.user.name = dbUser.username;
-      return session;
-    },
+      session.user.name = dbUser?.username || session.user.name;
+    } catch (err) {
+      console.error("Error in session callback:", err);
+    }
+    return session;
   },
+}
 
 };
 
