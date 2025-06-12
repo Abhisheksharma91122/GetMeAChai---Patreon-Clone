@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react'
 import Script from 'next/script'
 import { initiate, fetchpayments, fetchuser } from '@/actions/useraction'
 import { useSession } from 'next-auth/react'
+import { useCallback } from 'react'
 import dotenv from "dotenv";
 import { useSearchParams } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 dotenv.config();
 
 const Paymentpage = ({ username }) => {
@@ -24,34 +26,35 @@ const Paymentpage = ({ username }) => {
     const searchParams = useSearchParams();
     const router = useRouter()
 
+    const getData = useCallback(async () => {
+        try {
+            const user = await fetchuser(username)
+            setcurrentUser(user)
+
+            const dbpayments = await fetchpayments(username)
+            setPayment(dbpayments)
+        } catch (err) {
+            console.error('Error fetching data:', err)
+        } finally {
+            setLoading(false)
+        }
+    }, [username])
+
     useEffect(() => {
         getData()
-    }, [])
+    }, [getData])
 
     useEffect(() => {
         if (searchParams.get("paymentdone") == "true") {
             toast.success("payment success")
         }
         router.push(`/${username}`)
-    }, [])
-
-
+    }, [searchParams, router, username])
 
 
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value });
     }
-
-
-    const getData = async () => {
-        let a = await fetchuser(username);
-        setcurrentUser(a);
-        let dbpayments = await fetchpayments(username);
-        setPayment(dbpayments);
-        setLoading(false)
-        // console.log(payment.length)
-    }
-
 
 
     const pay = async (amount) => {
@@ -89,9 +92,15 @@ const Paymentpage = ({ username }) => {
 
 
             <div className='cover w-full bg-red-50 relative'>
-                <img className='w-full object-cover h-[350]' src={currentUser.coverpic} alt="creator img" />
+                <Image
+                    className="w-full object-cover h-[350px]"
+                    src={currentUser.coverpic || "/default.webp"}
+                    alt="creator img"
+                    width={1200}
+                    height={350}
+                />
                 <div className='absolute w-[100px] h-[100px] left-1/2 bottom-[-40px] transform -translate-x-1/2 rounded-2xl overflow-hidden'>
-                    <img className='w-full h-full object-cover' src={currentUser.profilepic} alt="car img" />
+                    <Image className='w-full h-full object-cover' width={1200} height={1200} src={currentUser.profilepic || "/car.jpg"} alt="car img" />
                 </div>
             </div>
 
@@ -113,9 +122,9 @@ const Paymentpage = ({ username }) => {
                             {payment.length == 0 && <li>No payments yet</li>}
                             {payment.map((p, i) => {
                                 return <li key={i} className='my-4 flex gap-2 items-center'>
-                                    <img src="/avatar.gif" width={33} alt="avatar img" />
+                                    <Image src="/avatar.gif" width={33} height={33} alt="avatar img" />
                                     <span>
-                                        {p.name} donated <span className='font-bold'>₹{parseInt(p.amount) / 100}</span> with message "{p.message}"
+                                        {p.name} donated <span className='font-bold'>₹{parseInt(p.amount) / 100}</span> with message &quot;{p.message}&quot;
                                     </span>
                                 </li>
                             })}

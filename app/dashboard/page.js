@@ -16,6 +16,11 @@ const Dashboard = () => {
     setform({ ...form, [e.target.name]: [e.target.value] })
   }
 
+  const getData = async() => {
+    let a = await fetchuser(session.user.name);
+    setform(a);
+    console.log("this is form" , a)
+  }
   useEffect(() => {
     document.title = "Dashboard - Get Me A Chai"
     if (!session) {
@@ -23,13 +28,8 @@ const Dashboard = () => {
     } else {
       getData();
     }
-  }, [session])
+  }, [])
 
-  const getData = async() => {
-    let a = await fetchuser(session.user.name);
-    setform(a);
-    console.log("this is form" , a)
-  }
 
   const handleSubmit = async(e)=>{
     let a = await updateProfile(e, session.user.name);

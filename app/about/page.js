@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 const About = () => {
   return (
@@ -13,7 +14,7 @@ const About = () => {
       <section className="py-16 px-5 max-w-5xl mx-auto">
         <h2 className="text-3xl font-semibold mb-6 text-center">Our Mission</h2>
         <p className="text-lg text-white/80 text-center max-w-3xl mx-auto">
-          We believe everyone should have the power to make a difference. Our crowdfunding platform makes it easy to support creators, causes, and communities through simple and secure payments. Whether you're buying someone a coffee or backing a big idea, your support has an impact.
+          We believe everyone should have the power to make a difference. Our crowdfunding platform makes it easy to support creators, causes, and communities through simple and secure payments. Whether you&apos;re buying someone a coffee or backing a big idea, your support has an impact.
         </p>
       </section>
 
@@ -37,14 +38,14 @@ const About = () => {
       <section className="py-16 px-5 text-center">
         <h2 className="text-3xl font-bold mb-4">Join Us Today</h2>
         <p className="text-lg text-white/80 max-w-2xl mx-auto mb-6">
-          Whether you're a creator looking for support or a supporter wanting to contribute — you're in the right place.
+          Whether you&apos;re a creator looking for support or a supporter wanting to contribute — you&apos;re in the right place.
         </p>
-        <a
+        <Link
           href="/login"
           className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition"
         >
           Get Started
-        </a>
+        </Link>
       </section>
     </div>
   )
