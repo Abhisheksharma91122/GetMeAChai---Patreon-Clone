@@ -6,7 +6,9 @@ import connectDB from "@/models/db"
 import User from "@/models/User"
 
 export const initiate = async (amount, to_username, paymentform) => {
+    console.log("connecting...")
     await connectDB();
+    console.log("connected...")
     // fetch the secret of the user who is getting the payment 
     let user = await User.findOne({ username: to_username })
     const secret = user.razorpaysecret
@@ -29,7 +31,7 @@ export const initiate = async (amount, to_username, paymentform) => {
 
 export const fetchuser = async (username) => {
     await connectDB();
-    console.log(username);
+    console.log("the username is : ", username);
     let u = await User.findOne({ username: username });
     let user = u.toObject({ flattenObjectIds: true })
     return user;

@@ -5,6 +5,7 @@ const nextConfig = {
     },
     images: {
         domains: ['c10.patreonusercontent.com'],
+        domains: ['images.pexels.com'],
     },
 };
 
